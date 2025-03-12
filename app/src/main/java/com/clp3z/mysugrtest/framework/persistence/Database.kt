@@ -7,7 +7,8 @@ import com.clp3z.mysugrtest.framework.persistence.model.LocalGlucoseMeasurement
 
 @Database(
     entities = [LocalGlucoseMeasurement::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class Database : RoomDatabase() {
 
