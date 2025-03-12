@@ -14,3 +14,5 @@ fun GlucoseMeasurement.toLocalGlucoseMeasurement() = LocalGlucoseMeasurement(
     unit = unit,
     value = value
 )
+
+fun List<LocalGlucoseMeasurement>.toGlucoseMeasurements() = map { it.toGlucoseMeasurement() }

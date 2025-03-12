@@ -12,5 +12,5 @@ interface GlucoseMeasurementDAO {
     fun getGlucoseMeasurements(): Flow<List<LocalGlucoseMeasurement>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGlucoseMeasurement(value: LocalGlucoseMeasurement)
+    suspend fun insertGlucoseMeasurement(measurement: LocalGlucoseMeasurement)
 }
