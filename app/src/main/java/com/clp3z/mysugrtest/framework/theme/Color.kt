@@ -1,4 +1,4 @@
-package com.clp3z.mysugrtest.ui.theme
+package com.clp3z.mysugrtest.framework.theme
 
 import androidx.compose.ui.graphics.Color
 

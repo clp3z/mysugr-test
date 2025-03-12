@@ -1,6 +1,5 @@
-package com.clp3z.mysugrtest.ui.theme
+package com.clp3z.mysugrtest.framework.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
