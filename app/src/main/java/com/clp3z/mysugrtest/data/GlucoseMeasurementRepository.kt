@@ -21,7 +21,7 @@ class GlucoseMeasurementRepository @Inject constructor(
             .map { it.rightWithError() }
             .catch { emit(it.toDatabaseError().leftWithError()) }
 
-    suspend fun insertMeasurement(measurement: GlucoseMeasurement): Either<Error, Unit> = try {
+    suspend fun addGlucoseMeasurement(measurement: GlucoseMeasurement): Either<Error, Unit> = try {
         localGlucoseMeasurementDataSource.insertGlucoseMeasurement(measurement)
         Unit.right()
     } catch (exception: Exception) {

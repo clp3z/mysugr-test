@@ -21,12 +21,12 @@ import org.junit.Test
 import kotlin.time.Duration.Companion.seconds
 
 class GlucoseMeasurementRepositoryTest {
+
     private lateinit var localDataSource: LocalGlucoseMeasurementDataSource
     private lateinit var repository: GlucoseMeasurementRepository
     private val testDispatcher = StandardTestDispatcher()
     private val testScope = TestScope(testDispatcher)
 
-    // Test data
     private val testMeasurement = GlucoseMeasurement(
         id = 0,
         unit = GlucoseUnit.MMOL_L,
@@ -84,7 +84,7 @@ class GlucoseMeasurementRepositoryTest {
 
         // When
         val testMeasurement = testMeasurement.copy(id = 1)
-        val result = repository.insertMeasurement(testMeasurement)
+        val result = repository.addGlucoseMeasurement(testMeasurement)
 
         // Then
         assertTrue(result.isRight())
@@ -100,7 +100,7 @@ class GlucoseMeasurementRepositoryTest {
 
         // When
         val testMeasurement = testMeasurement.copy(id = 1)
-        val result = repository.insertMeasurement(testMeasurement)
+        val result = repository.addGlucoseMeasurement(testMeasurement)
 
         // Then
         assertTrue(result.isLeft())
