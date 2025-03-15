@@ -1,5 +1,6 @@
 package com.clp3z.mysugrtest.features.bottomsheet.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,8 +48,10 @@ fun UnitRadioGroup(
                 RadioButton(
                     selected = selected == index,
                     onClick = {
+                        val unitToSelect = units[index].toGlucoseUnit(context)
                         selected = index
-                        onUnitSelected(units[selected].toGlucoseUnit(context))
+                        onUnitSelected(unitToSelect)
+                        Log.e("UnitRadioGroup", "*** selected unit: $unitToSelect")
                     }
                 )
                 Text(

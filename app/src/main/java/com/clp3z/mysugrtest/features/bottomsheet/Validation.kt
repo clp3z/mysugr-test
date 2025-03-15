@@ -5,4 +5,4 @@ fun String.isFloat() = this.toFloatOrNull() != null
 fun Float.isPositive() = this >= 0
 
 fun String.isMeasurementValid(): Boolean =
-    this.isNotBlank() && this.isFloat() && this.toFloat().isPositive()
+    this.isFloat() && this.toFloat().isPositive() || this.isBlank()

@@ -46,11 +46,11 @@ fun BottomSheetLayout(
                 average = it,
                 selectedUnit = selectedUnit.toString(context)
             )
+            HorizontalDivider(
+                color = Color.LightGray.copy(alpha = 0.5f),
+                modifier = Modifier.padding(vertical = Spacing.spacing_16)
+            )
         }
-        HorizontalDivider(
-            color = Color.LightGray.copy(alpha = 0.5f),
-            modifier = Modifier.padding(vertical = Spacing.spacing_16)
-        )
         Text(
             text = stringResource(R.string.add_glucose_measurement).uppercase(),
             style = MaterialTheme.typography.titleMedium.copy(color = Color.DarkGray),

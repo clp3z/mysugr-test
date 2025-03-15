@@ -7,4 +7,5 @@
     <string name="your_average_is">Your average is %1$s %2$s</string>
     <string name="save_measurement">Save Measurement</string>
     <string name="unknown">Unknown</string>
+    <string name="glucose_measurement_value_is_invalid">Glucose measurement value is invalid</string>
 </resources>
