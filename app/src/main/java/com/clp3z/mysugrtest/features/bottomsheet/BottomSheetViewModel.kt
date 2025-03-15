@@ -3,6 +3,7 @@ package com.clp3z.mysugrtest.features.bottomsheet
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.clp3z.mysugrtest.domain.AddGlucoseMeasurementUseCase
+import com.clp3z.mysugrtest.domain.GetGlucoseMeasurementsUseCase
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class BottomSheetViewModel @Inject constructor(
+    private val getGlucoseMeasurementsUseCase: GetGlucoseMeasurementsUseCase,
     private val addGlucoseMeasurementUseCase: AddGlucoseMeasurementUseCase
 ) : ViewModel() {
 
@@ -28,6 +30,25 @@ class BottomSheetViewModel @Inject constructor(
 
     private val _viewState = MutableStateFlow(ViewState())
     val viewState = _viewState.asStateFlow()
+
+    fun initialize() = viewModelScope.launch {
+        getGlucoseMeasurementsUseCase().collect { result ->
+            result.fold(
+                ifLeft = {},
+                ifRight = { measurements ->
+                    _viewState.update {
+                        it.copy(
+                            average = measurements
+                                .takeIf { list -> list.isNotEmpty() }
+                                ?.map { measurement -> measurement.value }
+                                ?.average()
+                                ?.toFloat()
+                        )
+                    }
+                }
+            )
+        }
+    }
 
     fun onUnitSelected(unit: GlucoseUnit) = viewModelScope.launch {
         val measurement = measurement ?: return@launch
@@ -54,13 +75,15 @@ class BottomSheetViewModel @Inject constructor(
     fun onSaveMeasurementClick() = viewModelScope.launch {
         val measurement = measurement ?: return@launch
         if (measurement.isMeasurementValid()) {
-            _viewState.update { ViewState(average = measurement.toFloat(), measurement = null) }
             addGlucoseMeasurementUseCase(
                 measurement = GlucoseMeasurement(
                     value = measurement.toFloat(),
                     unit = selectedUnit
                 )
             )
+            _viewState.update { it.copy(measurement = null) }
+        } else {
+            _viewState.update { it.copy(isMeasurementValid = false) }
         }
     }
 }
