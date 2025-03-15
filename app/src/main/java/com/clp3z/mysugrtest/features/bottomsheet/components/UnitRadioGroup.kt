@@ -1,4 +1,4 @@
-package com.clp3z.mysugrtest.features.home.components
+package com.clp3z.mysugrtest.features.bottomsheet.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -14,18 +14,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.clp3z.mysugrtest.R
+import com.clp3z.mysugrtest.entity.GlucoseUnit
+import com.clp3z.mysugrtest.features.toGlucoseUnit
 import com.clp3z.mysugrtest.framework.theme.BoxPreview
 import com.clp3z.mysugrtest.framework.theme.Spacing
 
 @Composable
 fun UnitRadioGroup(
-    onUnitSelected: (String) -> Unit,
+    onUnitSelected: (GlucoseUnit) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     val units = listOf(stringResource(R.string.mg_dl), stringResource(R.string.mmol_l))
     var selected by remember { mutableIntStateOf(0) }
     Row(
@@ -42,7 +46,7 @@ fun UnitRadioGroup(
                     selected = selected == index,
                     onClick = {
                         selected = index
-                        onUnitSelected(unit)
+                        onUnitSelected(units[selected].toGlucoseUnit(context))
                     }
                 )
                 Text(

@@ -1,4 +1,4 @@
-package com.clp3z.mysugrtest.features.home.components
+package com.clp3z.mysugrtest.features.bottomsheet.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

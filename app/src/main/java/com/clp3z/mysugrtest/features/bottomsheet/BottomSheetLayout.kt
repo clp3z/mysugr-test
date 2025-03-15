@@ -1,4 +1,4 @@
-package com.clp3z.mysugrtest.features.home.components
+package com.clp3z.mysugrtest.features.bottomsheet
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,10 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.clp3z.mysugrtest.R
+import com.clp3z.mysugrtest.entity.GlucoseUnit
+import com.clp3z.mysugrtest.features.bottomsheet.components.GlucoseMeasurement
+import com.clp3z.mysugrtest.features.bottomsheet.components.UnitRadioGroup
+import com.clp3z.mysugrtest.features.toString
 import com.clp3z.mysugrtest.framework.theme.BoxPreview
 import com.clp3z.mysugrtest.framework.theme.Spacing
 import com.clp3z.mysugrtest.framework.ui.input.InputFieldState
@@ -24,11 +29,12 @@ import com.clp3z.mysugrtest.framework.ui.input.rememberInputFieldState
 @Composable
 fun BottomSheetLayout(
     average: Float?,
-    selectedUnit: String,
+    selectedUnit: GlucoseUnit,
     inputFieldState: InputFieldState,
-    onUnitSelected: (String) -> Unit,
+    onUnitSelected: (GlucoseUnit) -> Unit,
     onSaveMeasurementClick: () -> Unit
 ) {
+    val context = LocalContext.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -38,7 +44,7 @@ fun BottomSheetLayout(
         average?.let {
             GlucoseMeasurement(
                 average = it,
-                selectedUnit = selectedUnit
+                selectedUnit = selectedUnit.toString(context)
             )
         }
         HorizontalDivider(
@@ -55,7 +61,7 @@ fun BottomSheetLayout(
             modifier = Modifier.padding(top = Spacing.spacing_8)
         )
         InputTextField(
-            label = selectedUnit,
+            label = selectedUnit.toString(context),
             inputFieldState = inputFieldState,
             modifier = Modifier.padding(top = Spacing.spacing_8, bottom = Spacing.spacing_16)
         )
@@ -73,7 +79,7 @@ private fun BottomSheetLayoutPreview() {
     BoxPreview {
         BottomSheetLayout(
             average = 100f,
-            selectedUnit = "mg/dL",
+            selectedUnit = GlucoseUnit.MG_DL,
             inputFieldState = inputFieldState,
             onUnitSelected = {},
             onSaveMeasurementClick = {}

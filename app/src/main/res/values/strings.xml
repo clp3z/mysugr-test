@@ -6,4 +6,5 @@
     <string name="add_glucose_measurement">Add glucose measurement</string>
     <string name="your_average_is">Your average is %1$s %2$s</string>
     <string name="save_measurement">Save Measurement</string>
+    <string name="unknown">Unknown</string>
 </resources>

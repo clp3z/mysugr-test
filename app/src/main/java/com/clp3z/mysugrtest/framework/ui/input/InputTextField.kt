@@ -79,7 +79,7 @@ fun InputTextField(
                 Text(
                     text = label,
                     textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.bodyLarge.copy(color = Color.Gray),
+                    style = MaterialTheme.typography.bodyLarge.copy(color = Color.DarkGray),
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier
                         .padding(end = Spacing.spacing_16)

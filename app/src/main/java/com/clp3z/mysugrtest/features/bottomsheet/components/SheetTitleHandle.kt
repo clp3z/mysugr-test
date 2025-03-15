@@ -1,4 +1,4 @@
-package com.clp3z.mysugrtest.features.home.components
+package com.clp3z.mysugrtest.features.bottomsheet.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
@@ -20,9 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.clp3z.mysugrtest.R
-import com.clp3z.mysugrtest.features.home.components.SheetHandleState.COLLAPSED
-import com.clp3z.mysugrtest.features.home.components.SheetHandleState.EXPANDED
-import com.clp3z.mysugrtest.features.home.components.SheetHandleState.INITIAL
+import com.clp3z.mysugrtest.features.bottomsheet.components.SheetHandleState.COLLAPSED
+import com.clp3z.mysugrtest.features.bottomsheet.components.SheetHandleState.EXPANDED
+import com.clp3z.mysugrtest.features.bottomsheet.components.SheetHandleState.INITIAL
 import com.clp3z.mysugrtest.framework.theme.BoxPreview
 import com.clp3z.mysugrtest.framework.theme.Size
 import com.clp3z.mysugrtest.framework.theme.Spacing
