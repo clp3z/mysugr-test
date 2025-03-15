@@ -23,14 +23,15 @@ import com.clp3z.mysugrtest.framework.theme.Spacing
 
 @Composable
 fun UnitRadioGroup(
-    onUnitSelected: (String) -> Unit
+    onUnitSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val units = listOf(stringResource(R.string.mg_dl), stringResource(R.string.mmol_l))
     var selected by remember { mutableIntStateOf(0) }
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         units.forEachIndexed { index, unit ->
             Row(
