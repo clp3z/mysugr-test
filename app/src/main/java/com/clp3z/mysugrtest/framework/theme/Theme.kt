@@ -61,7 +61,6 @@ fun FullScreenPreview(content: @Composable () -> Unit) {
 
 @Composable
 fun BoxPreview(
-    height : Dp = 300.dp,
     content: @Composable () -> Unit
 ) {
     AppTheme{
@@ -70,7 +69,6 @@ fun BoxPreview(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                 .fillMaxWidth()
-                .height(height)
             ) {
                 content()
             }
