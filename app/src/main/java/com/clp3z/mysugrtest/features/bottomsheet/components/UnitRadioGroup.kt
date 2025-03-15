@@ -21,17 +21,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.clp3z.mysugrtest.R
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.toGlucoseUnit
+import com.clp3z.mysugrtest.features.toString
 import com.clp3z.mysugrtest.framework.theme.BoxPreview
 import com.clp3z.mysugrtest.framework.theme.Spacing
 
 @Composable
 fun UnitRadioGroup(
+    selectedUnit: GlucoseUnit,
     onUnitSelected: (GlucoseUnit) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val units = listOf(stringResource(R.string.mg_dl), stringResource(R.string.mmol_l))
-    var selected by remember { mutableIntStateOf(0) }
+    var selected by remember { mutableIntStateOf(units.indexOf(selectedUnit.toString(context))) }
     Row(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
@@ -63,6 +65,9 @@ fun UnitRadioGroup(
 @Composable
 private fun UnitRadioGroupPreview() {
     BoxPreview {
-        UnitRadioGroup(onUnitSelected = {})
+        UnitRadioGroup(
+            selectedUnit = GlucoseUnit.MMOL_L,
+            onUnitSelected = {}
+        )
     }
 }

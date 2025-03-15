@@ -57,6 +57,7 @@ fun BottomSheetLayout(
             fontWeight = FontWeight.SemiBold
         )
         UnitRadioGroup(
+            selectedUnit = selectedUnit,
             onUnitSelected = onUnitSelected,
             modifier = Modifier.padding(top = Spacing.spacing_8)
         )
