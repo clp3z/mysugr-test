@@ -29,7 +29,7 @@ fun UnitRadioGroup(
     val units = listOf(stringResource(R.string.mg_dl), stringResource(R.string.mmol_l))
     var selected by remember { mutableIntStateOf(0) }
     Row(
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth()
     ) {
