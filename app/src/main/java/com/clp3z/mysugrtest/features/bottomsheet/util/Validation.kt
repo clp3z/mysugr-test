@@ -1,4 +1,4 @@
-package com.clp3z.mysugrtest.features.bottomsheet
+package com.clp3z.mysugrtest.features.bottomsheet.util
 
 fun String.isFloat() = this.toFloatOrNull() != null
 

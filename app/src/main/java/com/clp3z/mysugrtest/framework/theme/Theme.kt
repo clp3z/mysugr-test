@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
@@ -29,6 +31,20 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = Pink80,
     surface = Color.White,
     onSurface = Color.DarkGray
+)
+
+val radioButtonColors = RadioButtonColors(
+    selectedColor = Color.Black,
+    unselectedColor = Color.Gray,
+    disabledUnselectedColor = Color.LightGray,
+    disabledSelectedColor = Color.LightGray
+)
+
+val buttonColors = ButtonColors(
+    containerColor = Color.Black,
+    contentColor = Color.White,
+    disabledContainerColor = Color.LightGray,
+    disabledContentColor = Color.Gray
 )
 
 @Composable

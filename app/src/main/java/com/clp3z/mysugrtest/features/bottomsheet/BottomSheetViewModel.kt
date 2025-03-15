@@ -7,6 +7,9 @@ import com.clp3z.mysugrtest.domain.AddGlucoseMeasurementUseCase
 import com.clp3z.mysugrtest.domain.GetGlucoseMeasurementsUseCase
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.entity.GlucoseUnit
+import com.clp3z.mysugrtest.features.bottomsheet.util.isMeasurementValid
+import com.clp3z.mysugrtest.features.bottomsheet.util.toMgDl
+import com.clp3z.mysugrtest.features.bottomsheet.util.toMmolL
 import com.clp3z.mysugrtest.framework.ui.input.InputFieldData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

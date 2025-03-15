@@ -2,6 +2,7 @@ package com.clp3z.mysugrtest.features.bottomsheet
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
@@ -15,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.clp3z.mysugrtest.R
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.bottomsheet.components.GlucoseMeasurement
@@ -22,6 +24,7 @@ import com.clp3z.mysugrtest.features.bottomsheet.components.UnitRadioGroup
 import com.clp3z.mysugrtest.features.toString
 import com.clp3z.mysugrtest.framework.theme.BoxPreview
 import com.clp3z.mysugrtest.framework.theme.Spacing
+import com.clp3z.mysugrtest.framework.theme.buttonColors
 import com.clp3z.mysugrtest.framework.ui.input.InputFieldState
 import com.clp3z.mysugrtest.framework.ui.input.InputTextField
 import com.clp3z.mysugrtest.framework.ui.input.rememberInputFieldState
@@ -64,9 +67,13 @@ fun BottomSheetLayout(
         InputTextField(
             label = selectedUnit.toString(context),
             inputFieldState = inputFieldState,
-            modifier = Modifier.padding(top = Spacing.spacing_8, bottom = Spacing.spacing_16)
+            modifier = Modifier.padding(top = Spacing.spacing_8, bottom = Spacing.spacing_24)
         )
-        Button(onClick = { onSaveMeasurementClick() }) {
+        Button(
+            modifier = Modifier.height(46.dp),
+            colors = buttonColors,
+            onClick = { onSaveMeasurementClick() }
+        ) {
             Text(text = stringResource(R.string.save_measurement))
         }
     }

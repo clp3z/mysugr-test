@@ -25,6 +25,7 @@ import com.clp3z.mysugrtest.features.toGlucoseUnit
 import com.clp3z.mysugrtest.features.toString
 import com.clp3z.mysugrtest.framework.theme.BoxPreview
 import com.clp3z.mysugrtest.framework.theme.Spacing
+import com.clp3z.mysugrtest.framework.theme.radioButtonColors
 
 @Composable
 fun UnitRadioGroup(
@@ -46,6 +47,7 @@ fun UnitRadioGroup(
                 modifier = Modifier.padding(end = Spacing.spacing_16)
             ) {
                 RadioButton(
+                    colors = radioButtonColors,
                     selected = selected == index,
                     onClick = {
                         val unitToSelect = units[index].toGlucoseUnit(context)
