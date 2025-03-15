@@ -18,6 +18,7 @@ import com.clp3z.mysugrtest.R
 import com.clp3z.mysugrtest.framework.theme.BoxPreview
 import com.clp3z.mysugrtest.framework.theme.Spacing
 import com.clp3z.mysugrtest.framework.ui.input.InputFieldState
+import com.clp3z.mysugrtest.framework.ui.input.InputTextField
 import com.clp3z.mysugrtest.framework.ui.input.rememberInputFieldState
 
 @Composable
@@ -53,8 +54,8 @@ fun BottomSheetLayout(
             onUnitSelected = onUnitSelected,
             modifier = Modifier.padding(top = Spacing.spacing_8)
         )
-        GlucoseInputField(
-            selectedUnit = selectedUnit,
+        InputTextField(
+            label = selectedUnit,
             inputFieldState = inputFieldState,
             modifier = Modifier.padding(top = Spacing.spacing_8, bottom = Spacing.spacing_16)
         )
@@ -68,6 +69,7 @@ fun BottomSheetLayout(
 @Composable
 private fun BottomSheetLayoutPreview() {
     val inputFieldState = rememberInputFieldState()
+    inputFieldState.onFieldValidation { Pair(false, "Invalid value") }
     BoxPreview {
         BottomSheetLayout(
             average = 100f,

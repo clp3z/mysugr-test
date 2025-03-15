@@ -23,7 +23,7 @@ import com.clp3z.mysugrtest.R
 import com.clp3z.mysugrtest.features.home.components.SheetHandleState.COLLAPSED
 import com.clp3z.mysugrtest.features.home.components.SheetHandleState.EXPANDED
 import com.clp3z.mysugrtest.features.home.components.SheetHandleState.INITIAL
-import com.clp3z.mysugrtest.framework.theme.FullScreenPreview
+import com.clp3z.mysugrtest.framework.theme.BoxPreview
 import com.clp3z.mysugrtest.framework.theme.Size
 import com.clp3z.mysugrtest.framework.theme.Spacing
 
@@ -68,7 +68,7 @@ fun SheetTitleHandle(
 @Preview
 @Composable
 private fun SheetTitleHandlePreview() {
-    FullScreenPreview {
+    BoxPreview {
         SheetTitleHandle(
             sheetHandleState = INITIAL,
             onHandleClick = {}
