@@ -7,7 +7,7 @@ import com.clp3z.mysugrtest.entity.GlucoseUnit
 
 @Entity
 data class LocalGlucoseMeasurement(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @TypeConverters(GlucoseUnitConverter::class) val unit: GlucoseUnit,
     val value: Float
 )
