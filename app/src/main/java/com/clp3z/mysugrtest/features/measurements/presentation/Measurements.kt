@@ -31,9 +31,3 @@ fun Measurements(
         modifier = modifier
     )
 }
-
-/*@Preview
-@Composable
-private fun MeasurementsPreview() {
-    Measurements(previewMeasurements)
-}*/

@@ -20,22 +20,30 @@ class MeasurementsViewModel @Inject constructor(
 
     data class ViewState(
         val measurements: List<GlucoseMeasurement> = emptyList(),
-        val selectedUnit: GlucoseUnit? = null
+        val selectedUnit: GlucoseUnit = GlucoseUnit.MG_DL
     )
 
     private val _viewState = MutableStateFlow(ViewState())
     val viewState = _viewState.asStateFlow()
 
     private var originalMeasurements: List<GlucoseMeasurement> = emptyList()
+    private val selectedUnit get() = viewState.value.selectedUnit
 
     fun initialize(selectedUnit: GlucoseUnit) = viewModelScope.launch {
         _viewState.update { it.copy(selectedUnit = selectedUnit) }
+        collectMeasurements()
+    }
+
+    private suspend fun collectMeasurements() {
         getGlucoseMeasurementsUseCase().collect { result ->
             result.fold(
                 ifLeft = {},
                 ifRight = { measurements ->
                     originalMeasurements = measurements
-                    val convertedMeasurements = convertMeasurements(measurements, selectedUnit)
+                    val convertedMeasurements = convertMeasurements(
+                        measurements = measurements,
+                        selectedUnit = selectedUnit
+                    )
                     _viewState.update { it.copy(measurements = convertedMeasurements) }
                 }
             )
@@ -45,16 +53,14 @@ class MeasurementsViewModel @Inject constructor(
     private fun convertMeasurements(
         measurements: List<GlucoseMeasurement>,
         selectedUnit: GlucoseUnit
-    ): List<GlucoseMeasurement> {
-        return measurements.map { measurement ->
-            if (measurement.unit != selectedUnit) {
-                measurement.copy(
-                    value = measurement.value.toUnitValue(unit = selectedUnit),
-                    unit = selectedUnit
-                )
-            } else {
-                measurement
-            }
+    ): List<GlucoseMeasurement> = measurements.map { measurement ->
+        if (measurement.unit != selectedUnit) {
+            measurement.copy(
+                value = measurement.value.toUnitValue(unit = selectedUnit),
+                unit = selectedUnit
+            )
+        } else {
+            measurement
         }
     }
 
