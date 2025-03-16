@@ -8,7 +8,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.clp3z.mysugrtest.R
 import com.clp3z.mysugrtest.entity.GlucoseUnit
-import com.clp3z.mysugrtest.features.bottomsheet.util.isMeasurementValid
 import com.clp3z.mysugrtest.framework.ui.input.rememberInputFieldState
 
 @Composable
@@ -28,8 +27,11 @@ fun BottomSheet(
 
     LaunchedEffect(viewState.measurement) {
         inputFieldState.onValueChange(viewState.measurement)
+    }
+
+    LaunchedEffect(viewState.isMeasurementValid) {
         inputFieldState.onFieldValidation {
-            when (viewState.measurement.isMeasurementValid()) {
+            when (viewState.isMeasurementValid) {
                 true -> true to ""
                 false -> false to context.getString(R.string.glucose_measurement_value_is_invalid)
             }
