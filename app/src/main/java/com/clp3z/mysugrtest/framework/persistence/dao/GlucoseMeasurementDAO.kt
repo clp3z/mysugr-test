@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GlucoseMeasurementDAO {
 
-    @Query("SELECT * FROM LocalGlucoseMeasurement")
+    @Query("SELECT * FROM LocalGlucoseMeasurement ORDER BY id DESC")
     fun getGlucoseMeasurements(): Flow<List<LocalGlucoseMeasurement>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
