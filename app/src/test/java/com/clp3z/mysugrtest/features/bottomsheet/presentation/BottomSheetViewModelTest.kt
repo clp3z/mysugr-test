@@ -6,6 +6,7 @@ import com.clp3z.mysugrtest.domain.AddGlucoseMeasurementUseCase
 import com.clp3z.mysugrtest.domain.GetGlucoseMeasurementsUseCase
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.entity.GlucoseUnit
+import com.clp3z.mysugrtest.features.common.BottomSheetViewModel
 import com.clp3z.mysugrtest.framework.ui.input.InputFieldData
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -58,7 +59,7 @@ class BottomSheetViewModelTest {
     }
 
     @Test
-    fun `initialize should set the selected unit`() = runTest {
+    fun `initializing with unit should set the selected unit`() = runTest {
         // When
         viewModel.initialize(GlucoseUnit.MMOL_L)
 
@@ -70,7 +71,7 @@ class BottomSheetViewModelTest {
     }
 
     @Test
-    fun `onUnitSelected should update the unit in viewState using turbine`() = runTest {
+    fun `selecting unit should update the unit in viewState`() = runTest {
         viewModel.viewState.test {
 
             // Given
@@ -91,7 +92,7 @@ class BottomSheetViewModelTest {
     }
 
     @Test
-    fun `onUnitSelected should convert average when unit changes`() = runTest {
+    fun `changing unit should convert average to new unit`() = runTest {
         // Given
         val measurements = listOf(
             GlucoseMeasurement(value = 90f, unit = GlucoseUnit.MG_DL),
@@ -114,7 +115,7 @@ class BottomSheetViewModelTest {
     }
 
     @Test
-    fun `onUnitSelected should convert measurement when unit changes`() = runTest {
+    fun `changing unit should convert measurement value to new unit`() = runTest {
         // Given
         viewModel.initialize(GlucoseUnit.MG_DL)
 
@@ -142,7 +143,77 @@ class BottomSheetViewModelTest {
     }
 
     @Test
-    fun `collectMeasurementInputField should update measurement in viewState`() = runTest {
+    fun `changing unit should convert all measurements to new unit`() = runTest {
+        // Given
+        val originalMeasurements = listOf(
+            GlucoseMeasurement(value = 90f, unit = GlucoseUnit.MG_DL),
+            GlucoseMeasurement(value = 180f, unit = GlucoseUnit.MG_DL)
+        )
+        every { getGlucoseMeasurementsUseCase() } returns flow { emit(originalMeasurements.right()) }
+
+        viewModel.initialize(GlucoseUnit.MG_DL)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        // When
+        viewModel.onUnitSelected(GlucoseUnit.MMOL_L)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        // Then
+        viewModel.viewState.test {
+            val state = awaitItem()
+            assertEquals(GlucoseUnit.MMOL_L, state.selectedUnit)
+
+            // Check that all measurements were converted
+            assertEquals(2, state.measurements.size)
+            assertEquals(5.0f, state.measurements[0].value, 0.1f)
+            assertEquals(10.0f, state.measurements[1].value, 0.1f)
+            assertEquals(GlucoseUnit.MMOL_L, state.measurements[0].unit)
+            assertEquals(GlucoseUnit.MMOL_L, state.measurements[1].unit)
+        }
+    }
+
+    @Test
+    fun `changing unit with mixed unit measurements should convert all to target unit`() = runTest {
+        // Given
+        val mixedMeasurements = listOf(
+            GlucoseMeasurement(value = 90f, unit = GlucoseUnit.MG_DL),
+            GlucoseMeasurement(value = 10f, unit = GlucoseUnit.MMOL_L)
+        )
+        every { getGlucoseMeasurementsUseCase() } returns flow { emit(mixedMeasurements.right()) }
+
+        viewModel.initialize(GlucoseUnit.MG_DL)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        viewModel.viewState.test {
+            val initialState = awaitItem()
+            assertEquals(GlucoseUnit.MG_DL, initialState.selectedUnit)
+            assertEquals(2, initialState.measurements.size)
+            assertEquals(90f, initialState.measurements[0].value)
+            assertEquals(180f, initialState.measurements[1].value, 0.1f) // 10 mmol/L ≈ 180 mg/dL
+            assertEquals(GlucoseUnit.MG_DL, initialState.measurements[0].unit)
+            assertEquals(GlucoseUnit.MG_DL, initialState.measurements[1].unit)
+        }
+
+        // When
+        viewModel.onUnitSelected(GlucoseUnit.MMOL_L)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        // Then
+        viewModel.viewState.test {
+            val state = awaitItem()
+            assertEquals(GlucoseUnit.MMOL_L, state.selectedUnit)
+
+            // Check that all measurements were converted to mmol/L
+            assertEquals(2, state.measurements.size)
+            assertEquals(5.0f, state.measurements[0].value, 0.1f) // 90 mg/dL ≈ 5.0 mmol/L
+            assertEquals(10.0f, state.measurements[1].value, 0.1f) // Original value
+            assertEquals(GlucoseUnit.MMOL_L, state.measurements[0].unit)
+            assertEquals(GlucoseUnit.MMOL_L, state.measurements[1].unit)
+        }
+    }
+
+    @Test
+    fun `collecting measurement input field should update measurement in viewState`() = runTest {
         // Given
         val inputField = MutableStateFlow(InputFieldData(""))
 
@@ -202,7 +273,7 @@ class BottomSheetViewModelTest {
     }
 
     @Test
-    fun `onSaveMeasurementClick should save valid input`() = runTest {
+    fun `clicking save with valid input should save measurement`() = runTest {
         // Given
         viewModel.initialize(GlucoseUnit.MG_DL)
         val inputField = MutableStateFlow(InputFieldData("120"))
@@ -222,7 +293,7 @@ class BottomSheetViewModelTest {
     }
 
     @Test
-    fun `onSaveMeasurementClick should clear input after successful save`() = runTest {
+    fun `clicking save with successful save should clear input`() = runTest {
         // Given
         viewModel.initialize(GlucoseUnit.MG_DL)
         val inputField = MutableStateFlow(InputFieldData("120"))
@@ -242,7 +313,7 @@ class BottomSheetViewModelTest {
     }
 
     @Test
-    fun `onSaveMeasurementClick should not save invalid input`() = runTest {
+    fun `clicking save with invalid input should not save measurement`() = runTest {
         // Given
         val inputField = MutableStateFlow(InputFieldData("-10"))
         viewModel.collectMeasurementInputField(inputField)
@@ -256,7 +327,7 @@ class BottomSheetViewModelTest {
     }
 
     @Test
-    fun `onSaveMeasurementClick should not save empty input`() = runTest {
+    fun `clicking save with empty input should not save measurement`() = runTest {
         // Given
         val inputField = MutableStateFlow(InputFieldData(""))
         viewModel.collectMeasurementInputField(inputField)
@@ -270,7 +341,7 @@ class BottomSheetViewModelTest {
     }
 
     @Test
-    fun `initialize should calculate average from measurements`() = runTest {
+    fun `initializing with measurements should calculate correct average`() = runTest {
         // Given
         val measurements = listOf(
             GlucoseMeasurement(value = 60f, unit = GlucoseUnit.MG_DL),
@@ -290,7 +361,27 @@ class BottomSheetViewModelTest {
     }
 
     @Test
-    fun `average should be null when no measurements exist`() = runTest {
+    fun `initializing with measurements should update viewState with measurements`() = runTest {
+        // Given
+        val measurements = listOf(
+            GlucoseMeasurement(value = 60f, unit = GlucoseUnit.MG_DL),
+            GlucoseMeasurement(value = 90f, unit = GlucoseUnit.MG_DL),
+            GlucoseMeasurement(value = 120f, unit = GlucoseUnit.MG_DL)
+        )
+        every { getGlucoseMeasurementsUseCase() } returns flow { emit(measurements.right()) }
+
+        // When
+        viewModel.initialize(GlucoseUnit.MG_DL)
+
+        // Then
+        viewModel.viewState.test {
+            val state = awaitItem()
+            assertEquals(measurements, state.measurements)
+        }
+    }
+
+    @Test
+    fun `initializing with no measurements should set average to null`() = runTest {
         // Given
         every { getGlucoseMeasurementsUseCase() } returns flow {
             emit(emptyList<GlucoseMeasurement>().right())
@@ -305,6 +396,8 @@ class BottomSheetViewModelTest {
             assertNull(state.average)
         }
     }
+
+
 
     // ========== ERROR HANDLING TESTS ==========
 

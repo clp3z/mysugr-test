@@ -1,4 +1,4 @@
-package com.clp3z.mysugrtest.features.bottomsheet.presentation
+package com.clp3z.mysugrtest.features.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,9 +7,6 @@ import com.clp3z.mysugrtest.domain.GetGlucoseMeasurementsUseCase
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.bottomsheet.util.isMeasurementValid
-import com.clp3z.mysugrtest.features.common.convertMeasurements
-import com.clp3z.mysugrtest.features.common.toPresentationValue
-import com.clp3z.mysugrtest.features.common.toUnitValue
 import com.clp3z.mysugrtest.framework.ui.input.InputFieldData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +23,7 @@ class BottomSheetViewModel @Inject constructor(
 ) : ViewModel() {
 
     data class ViewState(
+        val measurements: List<GlucoseMeasurement> = emptyList(),
         val average: Float? = null,
         val selectedUnit: GlucoseUnit = GlucoseUnit.MG_DL,
         val measurement: String = "",
@@ -39,6 +37,7 @@ class BottomSheetViewModel @Inject constructor(
     private val selectedUnit get () = _viewState.value.selectedUnit
     private val measurement get () = _viewState.value.measurement
     private val average get () = _viewState.value.average
+    private val isMeasurementValid get () = _viewState.value.isMeasurementValid
 
     fun initialize(selectedUnit: GlucoseUnit) {
         _viewState.update { it.copy(selectedUnit = selectedUnit) }
@@ -51,18 +50,22 @@ class BottomSheetViewModel @Inject constructor(
                 ifLeft = {},
                 ifRight = { measurements ->
                     originalMeasurements = measurements
-                    val convertedMeasurements = convertMeasurements(measurements, selectedUnit)
-
-                    _viewState.update {
-                        it.copy(
-                            average = convertedMeasurements
-                                .takeIf { list -> list.isNotEmpty() }
-                                ?.map { measurement -> measurement.value }
-                                ?.average()
-                                ?.toFloat()
-                        )
-                    }
+                    updateAverage(selectedUnit = selectedUnit)
                 }
+            )
+        }
+    }
+
+    private fun updateAverage(selectedUnit: GlucoseUnit) = viewModelScope.launch {
+        val convertedMeasurements = convertMeasurements(originalMeasurements, selectedUnit)
+        _viewState.update {
+            it.copy(
+                measurements = convertedMeasurements,
+                average = convertedMeasurements
+                    .takeIf { list -> list.isNotEmpty() }
+                    ?.map { measurement -> measurement.value }
+                    ?.average()
+                    ?.toFloat()
             )
         }
     }
@@ -82,7 +85,7 @@ class BottomSheetViewModel @Inject constructor(
 
     fun onUnitSelected(unit: GlucoseUnit) = viewModelScope.launch {
         _viewState.update { it.copy(selectedUnit = unit) }
-        if (measurement.isNotBlank() && _viewState.value.isMeasurementValid) {
+        if (measurement.isNotBlank() && isMeasurementValid) {
             _viewState.update {
                 it.copy(
                     measurement = measurement
@@ -93,21 +96,12 @@ class BottomSheetViewModel @Inject constructor(
             }
         }
         if (average != null) {
-            val convertedMeasurements = convertMeasurements(originalMeasurements, unit)
-            _viewState.update {
-                it.copy(
-                    average = convertedMeasurements
-                        .takeIf { list -> list.isNotEmpty() }
-                        ?.map { measurement -> measurement.value }
-                        ?.average()
-                        ?.toFloat()
-                )
-            }
+            updateAverage(selectedUnit = unit)
         }
     }
 
     fun onSaveMeasurementClick() = viewModelScope.launch {
-        if (measurement.isNotBlank() && _viewState.value.isMeasurementValid) {
+        if (measurement.isNotBlank() && isMeasurementValid) {
             addGlucoseMeasurementUseCase(
                 measurement = GlucoseMeasurement(
                     value = measurement.toFloat(),

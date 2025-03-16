@@ -7,11 +7,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.clp3z.mysugrtest.entity.GlucoseUnit
+import com.clp3z.mysugrtest.features.common.BottomSheetViewModel
 import com.clp3z.mysugrtest.features.measurements.components.MeasurementList
 
 @Composable
 fun Measurements(
-    viewModel: MeasurementsViewModel = hiltViewModel(),
+    viewModel: BottomSheetViewModel = hiltViewModel(),
     selectedUnit: GlucoseUnit,
     modifier: Modifier
 ) {
