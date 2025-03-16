@@ -7,18 +7,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.measurements.components.MeasurementList
+import com.clp3z.mysugrtest.features.measurements.previewMeasurements
 
 @Composable
 fun Measurements(
     viewModel: MeasurementsViewModel = hiltViewModel(),
+    unitSelected: GlucoseUnit,
     modifier: Modifier
 ) {
 
     val viewState by viewModel.viewState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.initialize()
+        viewModel.initialize(unitSelected)
+    }
+
+    LaunchedEffect(unitSelected) {
+        viewModel.onUnitSelected(unitSelected)
     }
 
     MeasurementList(
@@ -27,8 +34,8 @@ fun Measurements(
     )
 }
 
-@Preview
+/*@Preview
 @Composable
 private fun MeasurementsPreview() {
-    // Measurements(previewMeasurements)
-}
+    Measurements(previewMeasurements)
+}*/
