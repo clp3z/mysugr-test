@@ -1,9 +1,11 @@
 package com.clp3z.mysugrtest.features.bottomsheet.presentation
 
 import app.cash.turbine.test
+import arrow.core.left
 import arrow.core.right
 import com.clp3z.mysugrtest.domain.AddGlucoseMeasurementUseCase
 import com.clp3z.mysugrtest.domain.GetGlucoseMeasurementsUseCase
+import com.clp3z.mysugrtest.entity.Error
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.common.BottomSheetViewModel
@@ -397,44 +399,43 @@ class BottomSheetViewModelTest {
         }
     }
 
-
-
-    // ========== ERROR HANDLING TESTS ==========
-
-   /* @Test
-    fun `initialize should handle errors from useCase`() = runTest {
+    @Test
+    fun `initializing with error response should emit error through errorEvent`() = runTest {
         // Given
-        every { getGlucoseMeasurementsUseCase() } returns flow {
-            emit(Error.DatabaseError.left())
-        }
+        val expectedError = Error.Database("Test error")
+        every { getGlucoseMeasurementsUseCase() } returns flow { emit(expectedError.left()) }
 
-        // When
-        viewModel.initialize(GlucoseUnit.MG_DL)
+        viewModel.errorEvent.test {
 
-        // Then - ViewModel should not crash, and average should remain null
-        viewModel.viewState.test {
-            val state = awaitItem()
-            assertNull(state.average)
+            // When
+            viewModel.initialize(GlucoseUnit.MG_DL)
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Then
+            val emittedError = awaitItem()
+            assertEquals(expectedError, emittedError)
+
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `onSaveMeasurementClick should handle errors from useCase`() = runTest {
+    fun `exception in getMeasurements should emit unknown error through errorEvent`() = runTest {
         // Given
-        viewModel.initialize(GlucoseUnit.MG_DL)
-        val inputField = MutableStateFlow(InputFieldData("120"))
-        viewModel.collectMeasurementInputField(inputField)
-        testDispatcher.scheduler.advanceUntilIdle()
+        val testException = RuntimeException("Test exception")
+        every { getGlucoseMeasurementsUseCase() } returns flow { throw testException }
 
-        coEvery { addGlucoseMeasurementUseCase(any()) } returns Error.Database.left()
+        viewModel.errorEvent.test {
 
-        // When
-        viewModel.onSaveMeasurementClick()
+            // When
+            viewModel.initialize(GlucoseUnit.MG_DL)
+            testDispatcher.scheduler.advanceUntilIdle()
 
-        // Then - ViewModel should not crash, but input shouldn't be cleared on error
-        viewModel.viewState.test {
-            val state = awaitItem()
-            assertEquals("120", state.measurement)
+            // Then
+            val emittedError = awaitItem()
+            assertTrue(emittedError is Error.Unknown)
+
+            cancelAndIgnoreRemainingEvents()
         }
-    }*/
+    }
 }

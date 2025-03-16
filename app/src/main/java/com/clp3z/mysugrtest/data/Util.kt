@@ -9,3 +9,6 @@ fun <T> Error.leftWithError(): Either<Error, T> = Either.Left(this)
 
 fun Throwable.toDatabaseError(): Error.Database =
     Error.Database(this.localizedMessage ?: this.stackTraceToString())
+
+fun Throwable.toUnknownError(): Error.Unknown =
+    Error.Unknown(this.localizedMessage ?: this.stackTraceToString())

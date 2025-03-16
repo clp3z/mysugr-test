@@ -2,16 +2,21 @@ package com.clp3z.mysugrtest.features.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.clp3z.mysugrtest.data.toUnknownError
 import com.clp3z.mysugrtest.domain.AddGlucoseMeasurementUseCase
 import com.clp3z.mysugrtest.domain.GetGlucoseMeasurementsUseCase
+import com.clp3z.mysugrtest.entity.Error
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.bottomsheet.util.isMeasurementValid
 import com.clp3z.mysugrtest.framework.ui.input.InputFieldData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,6 +38,9 @@ class BottomSheetViewModel @Inject constructor(
     private val _viewState = MutableStateFlow(ViewState())
     val viewState = _viewState.asStateFlow()
 
+    private val _errorEvent = MutableSharedFlow<Error>()
+    val errorEvent = _errorEvent.asSharedFlow()
+
     private var originalMeasurements: List<GlucoseMeasurement> = emptyList()
     private val selectedUnit get () = _viewState.value.selectedUnit
     private val measurement get () = _viewState.value.measurement
@@ -45,15 +53,17 @@ class BottomSheetViewModel @Inject constructor(
     }
 
     private fun calculateAverage() = viewModelScope.launch {
-        getGlucoseMeasurementsUseCase().collect { result ->
-            result.fold(
-                ifLeft = {},
-                ifRight = { measurements ->
-                    originalMeasurements = measurements
-                    updateAverage(selectedUnit = selectedUnit)
-                }
-            )
-        }
+        getGlucoseMeasurementsUseCase()
+            .catch { throwable -> _errorEvent.emit(throwable.toUnknownError()) }
+            .collect { result ->
+                result.fold(
+                    ifLeft = { _errorEvent.emit(it) }  ,
+                    ifRight = { measurements ->
+                        originalMeasurements = measurements
+                        updateAverage(selectedUnit = selectedUnit)
+                    }
+                )
+            }
     }
 
     private fun updateAverage(selectedUnit: GlucoseUnit) = viewModelScope.launch {
