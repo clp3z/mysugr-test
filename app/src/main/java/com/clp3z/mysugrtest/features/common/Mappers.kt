@@ -1,4 +1,4 @@
-package com.clp3z.mysugrtest.features
+package com.clp3z.mysugrtest.features.common
 
 import android.content.Context
 import com.clp3z.mysugrtest.R

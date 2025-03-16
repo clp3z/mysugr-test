@@ -21,8 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.clp3z.mysugrtest.R
 import com.clp3z.mysugrtest.entity.GlucoseUnit
-import com.clp3z.mysugrtest.features.toGlucoseUnit
-import com.clp3z.mysugrtest.features.toString
+import com.clp3z.mysugrtest.features.common.toGlucoseUnit
+import com.clp3z.mysugrtest.features.common.toString
 import com.clp3z.mysugrtest.framework.theme.BoxPreview
 import com.clp3z.mysugrtest.framework.theme.Spacing
 import com.clp3z.mysugrtest.framework.theme.radioButtonColors

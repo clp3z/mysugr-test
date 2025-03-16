@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.clp3z.mysugrtest.features.measurements.HomeLayout
+import com.clp3z.mysugrtest.features.main.MainScreen
 import com.clp3z.mysugrtest.framework.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             AppTheme {
                 Scaffold {
                     Box(modifier = Modifier.padding(it)) {
-                        HomeLayout()
+                        MainScreen()
                     }
                 }
             }

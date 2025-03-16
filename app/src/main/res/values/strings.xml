@@ -3,7 +3,7 @@
     <string name="add_your_glucose_measurement">Add your Glucose Measurement</string>
     <string name="mg_dl">mg/dL</string>
     <string name="mmol_l">mmol/L</string>
-    <string name="add_glucose_measurement">Add glucose measurement</string>
+    <string name="add_glucose_measurement">Add Glucose Measurement</string>
     <string name="your_average_is">Your average is %1$s %2$s</string>
     <string name="save_measurement">Save Measurement</string>
     <string name="unknown">Unknown</string>

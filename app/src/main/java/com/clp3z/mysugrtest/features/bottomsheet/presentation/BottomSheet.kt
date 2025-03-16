@@ -1,4 +1,4 @@
-package com.clp3z.mysugrtest.features.bottomsheet
+package com.clp3z.mysugrtest.features.bottomsheet.presentation
 
 import android.util.Log
 import androidx.compose.runtime.Composable

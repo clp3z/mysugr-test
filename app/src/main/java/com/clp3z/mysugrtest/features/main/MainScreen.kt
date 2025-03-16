@@ -1,4 +1,4 @@
-package com.clp3z.mysugrtest.features.measurements
+package com.clp3z.mysugrtest.features.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,14 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.clp3z.mysugrtest.features.bottomsheet.BottomSheet
+import com.clp3z.mysugrtest.features.bottomsheet.presentation.BottomSheet
 import com.clp3z.mysugrtest.features.bottomsheet.components.SheetIndicator
 import com.clp3z.mysugrtest.framework.theme.Size
 import com.clp3z.mysugrtest.framework.theme.Spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeLayout() {
+fun MainScreen() {
     val bottomSheetState = rememberStandardBottomSheetState(initialValue = SheetValue.Expanded)
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
 
@@ -47,5 +47,5 @@ fun HomeLayout() {
 @Preview
 @Composable
 private fun HomeScaffoldPreview() {
-    HomeLayout()
+    MainScreen()
 }

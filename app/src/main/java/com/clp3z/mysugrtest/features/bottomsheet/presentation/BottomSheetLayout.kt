@@ -1,4 +1,4 @@
-package com.clp3z.mysugrtest.features.bottomsheet
+package com.clp3z.mysugrtest.features.bottomsheet.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +21,7 @@ import com.clp3z.mysugrtest.R
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.bottomsheet.components.GlucoseMeasurement
 import com.clp3z.mysugrtest.features.bottomsheet.components.UnitRadioGroup
-import com.clp3z.mysugrtest.features.toString
+import com.clp3z.mysugrtest.features.common.toString
 import com.clp3z.mysugrtest.framework.theme.BoxPreview
 import com.clp3z.mysugrtest.framework.theme.Spacing
 import com.clp3z.mysugrtest.framework.theme.buttonColors
