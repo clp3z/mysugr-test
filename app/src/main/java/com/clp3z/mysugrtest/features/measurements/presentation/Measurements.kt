@@ -12,18 +12,18 @@ import com.clp3z.mysugrtest.features.measurements.components.MeasurementList
 @Composable
 fun Measurements(
     viewModel: MeasurementsViewModel = hiltViewModel(),
-    unitSelected: GlucoseUnit,
+    selectedUnit: GlucoseUnit,
     modifier: Modifier
 ) {
 
     val viewState by viewModel.viewState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.initialize(unitSelected)
+        viewModel.initialize(selectedUnit)
     }
 
-    LaunchedEffect(unitSelected) {
-        viewModel.onUnitSelected(unitSelected)
+    LaunchedEffect(selectedUnit) {
+        viewModel.onUnitSelected(selectedUnit)
     }
 
     MeasurementList(

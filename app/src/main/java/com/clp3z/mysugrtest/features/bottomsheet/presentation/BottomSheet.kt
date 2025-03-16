@@ -1,6 +1,5 @@
 package com.clp3z.mysugrtest.features.bottomsheet.presentation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -15,16 +14,15 @@ import com.clp3z.mysugrtest.framework.ui.input.rememberInputFieldState
 @Composable
 fun BottomSheet(
     viewModel: BottomSheetViewModel = hiltViewModel(),
+    selectedUnit:  GlucoseUnit,
     onUnitSelected: (GlucoseUnit) -> Unit
 ) {
     val context = LocalContext.current
     val viewState by viewModel.viewState.collectAsState()
     val inputFieldState = rememberInputFieldState()
 
-    Log.d("", "*** Is recomposing...")
-
     LaunchedEffect(Unit) {
-        viewModel.initialize()
+        viewModel.initialize(selectedUnit)
         viewModel.collectMeasurementInputField(inputFieldState.data)
     }
 

@@ -18,7 +18,7 @@ import com.clp3z.mysugrtest.framework.theme.Spacing
 
 @Composable
 fun GlucoseMeasurement(
-    average: Float,
+    average: String,
     selectedUnit: String
 ) {
     Surface (
@@ -40,7 +40,7 @@ fun GlucoseMeasurement(
 @Composable
 private fun GlucoseMeasurementPreview() {
     GlucoseMeasurement(
-        average = 100f,
+        average = "100",
         selectedUnit = "mg/dl"
     )
 }

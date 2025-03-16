@@ -21,6 +21,7 @@ import com.clp3z.mysugrtest.R
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.bottomsheet.components.GlucoseMeasurement
 import com.clp3z.mysugrtest.features.bottomsheet.components.UnitRadioGroup
+import com.clp3z.mysugrtest.features.common.toPresentationValue
 import com.clp3z.mysugrtest.features.common.toString
 import com.clp3z.mysugrtest.framework.theme.BoxPreview
 import com.clp3z.mysugrtest.framework.theme.Spacing
@@ -46,7 +47,7 @@ fun BottomSheetLayout(
     ) {
         average?.let {
             GlucoseMeasurement(
-                average = it,
+                average = it.toPresentationValue(selectedUnit),
                 selectedUnit = selectedUnit.toString(context)
             )
             HorizontalDivider(

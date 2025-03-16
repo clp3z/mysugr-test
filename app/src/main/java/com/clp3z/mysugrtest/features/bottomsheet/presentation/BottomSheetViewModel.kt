@@ -8,6 +8,7 @@ import com.clp3z.mysugrtest.domain.GetGlucoseMeasurementsUseCase
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.bottomsheet.util.isMeasurementValid
+import com.clp3z.mysugrtest.features.common.toPresentationValue
 import com.clp3z.mysugrtest.features.common.toUnitValue
 import com.clp3z.mysugrtest.framework.ui.input.InputFieldData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +39,8 @@ class BottomSheetViewModel @Inject constructor(
     private val _viewState = MutableStateFlow(ViewState())
     val viewState = _viewState.asStateFlow()
 
-    fun initialize() = viewModelScope.launch {
+    fun initialize(selectedUnit: GlucoseUnit) = viewModelScope.launch {
+        _viewState.update { it.copy(selectedUnit = selectedUnit) }
         getGlucoseMeasurementsUseCase().collect { result ->
             result.fold(
                 ifLeft = {},
@@ -71,7 +73,12 @@ class BottomSheetViewModel @Inject constructor(
             _viewState.update { it.copy(selectedUnit = unit) }
             if (measurement.isNotBlank() && measurement.isMeasurementValid()) {
                 _viewState.update {
-                    it.copy(measurement = measurement.toFloat().toUnitValue(unit).toString())
+                    it.copy(
+                        measurement = measurement
+                            .toFloat()
+                            .toUnitValue(unit)
+                            .toPresentationValue(unit)
+                    )
                 }
             }
             if (average != null) {

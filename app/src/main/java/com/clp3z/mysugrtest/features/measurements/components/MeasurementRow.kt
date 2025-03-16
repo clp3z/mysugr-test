@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
+import com.clp3z.mysugrtest.features.common.toPresentationValue
 import com.clp3z.mysugrtest.features.common.toString
 import com.clp3z.mysugrtest.features.measurements.previewMeasurement
 import com.clp3z.mysugrtest.framework.theme.Spacing
@@ -26,6 +27,7 @@ fun MeasurementRow(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val glucoseUnit = glucoseMeasurement.unit
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -34,14 +36,14 @@ fun MeasurementRow(
             .padding(Spacing.spacing_16)
     ) {
         Text(
-            text = glucoseMeasurement.value.toString(),
+            text = glucoseMeasurement.value.toPresentationValue(glucoseUnit),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
             color = Color.Black,
             modifier = Modifier.weight(1f)
         )
         Text(
-            text = glucoseMeasurement.unit.toString(context),
+            text = glucoseUnit.toString(context),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Normal,
             color = Color.Black,

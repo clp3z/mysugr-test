@@ -29,7 +29,7 @@ fun MainScreen() {
     val bottomSheetState = rememberStandardBottomSheetState(initialValue = SheetValue.Expanded)
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
 
-    var unitSelected by remember { mutableStateOf(GlucoseUnit.MG_DL) }
+    var selectedUnit by remember { mutableStateOf(GlucoseUnit.MG_DL) }
 
     BottomSheetScaffold(
         sheetPeekHeight = Size.sheet_peek_height,
@@ -39,7 +39,10 @@ fun MainScreen() {
         sheetShape = RoundedCornerShape(topEnd = Spacing.spacing_8, topStart = Spacing.spacing_8),
         sheetShadowElevation = Spacing.spacing_16,
         sheetContent = {
-            BottomSheet(onUnitSelected = { unitSelected = it })
+            BottomSheet(
+                selectedUnit = selectedUnit,
+                onUnitSelected = { selectedUnit = it }
+            )
         },
         sheetDragHandle = {
             SheetIndicator(modifier = Modifier.padding(top = Spacing.spacing_16))
@@ -47,7 +50,7 @@ fun MainScreen() {
     ) {
         Measurements(
             modifier = Modifier.padding(it),
-            unitSelected = unitSelected
+            selectedUnit = selectedUnit
         )
     }
 }
