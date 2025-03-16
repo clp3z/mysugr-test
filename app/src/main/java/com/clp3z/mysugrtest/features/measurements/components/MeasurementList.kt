@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.features.measurements.previewMeasurements
 import com.clp3z.mysugrtest.framework.theme.AppTheme
+import com.clp3z.mysugrtest.framework.theme.FullScreenPreview
 import com.clp3z.mysugrtest.framework.theme.Size
 import com.clp3z.mysugrtest.framework.theme.Spacing
 
@@ -32,7 +33,7 @@ fun MeasurementList(
             )
             if (index != measurements.lastIndex) {
                 HorizontalDivider(
-                    color = Color.LightGray.copy(alpha = 0.8f),
+                    color = Color.DarkGray,
                     modifier = Modifier.padding(horizontal = Spacing.spacing_16)
                 )
             } else {
@@ -45,7 +46,7 @@ fun MeasurementList(
 @Preview
 @Composable
 private fun PlanetsListPreview() {
-    AppTheme {
+    FullScreenPreview {
         MeasurementList(measurements = previewMeasurements)
     }
 }

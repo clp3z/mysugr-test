@@ -1,8 +1,5 @@
 package com.clp3z.mysugrtest.features.main
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
@@ -14,8 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.clp3z.mysugrtest.features.bottomsheet.presentation.BottomSheet
 import com.clp3z.mysugrtest.features.bottomsheet.components.SheetIndicator
+import com.clp3z.mysugrtest.features.bottomsheet.presentation.BottomSheet
+import com.clp3z.mysugrtest.features.measurements.presentation.Measurements
+import com.clp3z.mysugrtest.framework.theme.PailYellow
 import com.clp3z.mysugrtest.framework.theme.Size
 import com.clp3z.mysugrtest.framework.theme.Spacing
 
@@ -28,19 +27,14 @@ fun MainScreen() {
     BottomSheetScaffold(
         sheetPeekHeight = Size.sheet_peek_height,
         scaffoldState = scaffoldState,
-        containerColor = Color.LightGray,
+        containerColor = Color(PailYellow.value),
         sheetContainerColor = Color.White,
         sheetShape = RoundedCornerShape(topEnd = Spacing.spacing_8, topStart = Spacing.spacing_8),
         sheetShadowElevation = Spacing.spacing_16,
         sheetContent = { BottomSheet() },
-        sheetDragHandle = { SheetIndicator(modifier = Modifier.padding(top = Spacing.spacing_16)) },
+        sheetDragHandle = { SheetIndicator(modifier = Modifier.padding(top = Spacing.spacing_16)) }
     ) {
-        Box(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-                .background(Color.LightGray)
-        )
+        Measurements(modifier = Modifier.padding(it))
     }
 }
 

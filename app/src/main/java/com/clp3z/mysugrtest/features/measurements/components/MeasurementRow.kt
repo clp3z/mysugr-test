@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,12 +37,14 @@ fun MeasurementRow(
             text = glucoseMeasurement.value.toString(),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
+            color = Color.Black,
             modifier = Modifier.weight(1f)
         )
         Text(
             text = glucoseMeasurement.unit.toString(context),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Normal,
+            color = Color.Black,
             textAlign = TextAlign.End,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
