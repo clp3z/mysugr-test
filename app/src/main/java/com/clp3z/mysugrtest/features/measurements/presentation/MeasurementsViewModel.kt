@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.clp3z.mysugrtest.domain.GetGlucoseMeasurementsUseCase
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.entity.GlucoseUnit
-import com.clp3z.mysugrtest.features.common.toUnitValue
+import com.clp3z.mysugrtest.features.common.convertMeasurements
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,20 +47,6 @@ class MeasurementsViewModel @Inject constructor(
                     _viewState.update { it.copy(measurements = convertedMeasurements) }
                 }
             )
-        }
-    }
-
-    private fun convertMeasurements(
-        measurements: List<GlucoseMeasurement>,
-        selectedUnit: GlucoseUnit
-    ): List<GlucoseMeasurement> = measurements.map { measurement ->
-        if (measurement.unit != selectedUnit) {
-            measurement.copy(
-                value = measurement.value.toUnitValue(unit = selectedUnit),
-                unit = selectedUnit
-            )
-        } else {
-            measurement
         }
     }
 

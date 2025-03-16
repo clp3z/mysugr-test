@@ -1,5 +1,6 @@
 package com.clp3z.mysugrtest.features.common
 
+import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import kotlin.math.roundToInt
 
@@ -25,4 +26,18 @@ fun Float.toPresentationValue(unit: GlucoseUnit): String = when (unit) {
     GlucoseUnit.MG_DL -> this.toInt().toString()
     GlucoseUnit.MMOL_L -> "%.1f".format(this)
     else -> ""
+}
+
+fun convertMeasurements(
+    measurements: List<GlucoseMeasurement>,
+    selectedUnit: GlucoseUnit
+): List<GlucoseMeasurement> = measurements.map { measurement ->
+    if (measurement.unit != selectedUnit) {
+        measurement.copy(
+            value = measurement.value.toUnitValue(unit = selectedUnit),
+            unit = selectedUnit
+        )
+    } else {
+        measurement
+    }
 }

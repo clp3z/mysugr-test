@@ -8,6 +8,7 @@ import com.clp3z.mysugrtest.domain.GetGlucoseMeasurementsUseCase
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.bottomsheet.util.isMeasurementValid
+import com.clp3z.mysugrtest.features.common.convertMeasurements
 import com.clp3z.mysugrtest.features.common.toPresentationValue
 import com.clp3z.mysugrtest.features.common.toUnitValue
 import com.clp3z.mysugrtest.framework.ui.input.InputFieldData
@@ -32,22 +33,30 @@ class BottomSheetViewModel @Inject constructor(
         val isMeasurementValid: Boolean = true
     )
 
+    private val _viewState = MutableStateFlow(ViewState())
+    val viewState = _viewState.asStateFlow()
+
+    private var originalMeasurements: List<GlucoseMeasurement> = emptyList()
     private val selectedUnit get () = _viewState.value.selectedUnit
     private val measurement get () = _viewState.value.measurement
     private val average get () = _viewState.value.average
 
-    private val _viewState = MutableStateFlow(ViewState())
-    val viewState = _viewState.asStateFlow()
-
     fun initialize(selectedUnit: GlucoseUnit) = viewModelScope.launch {
         _viewState.update { it.copy(selectedUnit = selectedUnit) }
+        calculateAverage()
+    }
+
+    private suspend fun calculateAverage() {
         getGlucoseMeasurementsUseCase().collect { result ->
             result.fold(
                 ifLeft = {},
                 ifRight = { measurements ->
+                    originalMeasurements = measurements
+                    val convertedMeasurements = convertMeasurements(measurements, selectedUnit)
+
                     _viewState.update {
                         it.copy(
-                            average = measurements
+                            average = convertedMeasurements
                                 .takeIf { list -> list.isNotEmpty() }
                                 ?.map { measurement -> measurement.value }
                                 ?.average()
