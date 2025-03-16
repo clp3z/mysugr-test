@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.features.measurements.previewMeasurements
-import com.clp3z.mysugrtest.framework.theme.AppTheme
 import com.clp3z.mysugrtest.framework.theme.FullScreenPreview
 import com.clp3z.mysugrtest.framework.theme.Size
 import com.clp3z.mysugrtest.framework.theme.Spacing

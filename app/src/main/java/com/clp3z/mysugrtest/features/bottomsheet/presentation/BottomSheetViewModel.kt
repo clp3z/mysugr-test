@@ -8,8 +8,7 @@ import com.clp3z.mysugrtest.domain.GetGlucoseMeasurementsUseCase
 import com.clp3z.mysugrtest.entity.GlucoseMeasurement
 import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.bottomsheet.util.isMeasurementValid
-import com.clp3z.mysugrtest.features.bottomsheet.util.toMgDl
-import com.clp3z.mysugrtest.features.bottomsheet.util.toMmolL
+import com.clp3z.mysugrtest.features.common.toUnitValue
 import com.clp3z.mysugrtest.framework.ui.input.InputFieldData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -71,20 +70,12 @@ class BottomSheetViewModel @Inject constructor(
         if (unit != selectedUnit) {
             _viewState.update { it.copy(selectedUnit = unit) }
             if (measurement.isNotBlank() && measurement.isMeasurementValid()) {
-                val newMeasurement = when (unit) {
-                    GlucoseUnit.MG_DL -> measurement.toFloat().toMgDl()
-                    GlucoseUnit.MMOL_L -> measurement.toFloat().toMmolL()
-                    else -> 0f
+                _viewState.update {
+                    it.copy(measurement = measurement.toFloat().toUnitValue(unit).toString())
                 }
-                _viewState.update { it.copy(measurement = newMeasurement.toString()) }
             }
             if (average != null) {
-                val newAverage = when (unit) {
-                    GlucoseUnit.MG_DL -> average?.toMgDl()
-                    GlucoseUnit.MMOL_L -> average?.toMmolL()
-                    else -> 0f
-                }
-                _viewState.update { it.copy(average = newAverage) }
+                _viewState.update { it.copy(average = average?.toUnitValue(unit)) }
             }
         }
     }

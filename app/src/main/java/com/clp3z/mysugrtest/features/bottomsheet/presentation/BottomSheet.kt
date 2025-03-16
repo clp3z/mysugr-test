@@ -8,12 +8,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.clp3z.mysugrtest.R
+import com.clp3z.mysugrtest.entity.GlucoseUnit
 import com.clp3z.mysugrtest.features.bottomsheet.util.isMeasurementValid
 import com.clp3z.mysugrtest.framework.ui.input.rememberInputFieldState
 
 @Composable
 fun BottomSheet(
-    viewModel: BottomSheetViewModel = hiltViewModel()
+    viewModel: BottomSheetViewModel = hiltViewModel(),
+    onUnitSelected: (GlucoseUnit) -> Unit
 ) {
     val context = LocalContext.current
     val viewState by viewModel.viewState.collectAsState()
@@ -40,7 +42,10 @@ fun BottomSheet(
         average = viewState.average,
         selectedUnit = viewState.selectedUnit,
         inputFieldState = inputFieldState,
-        onUnitSelected = { viewModel.onUnitSelected(it) },
+        onUnitSelected = {
+            viewModel.onUnitSelected(it)
+            onUnitSelected(it)
+        },
         onSaveMeasurementClick = { viewModel.onSaveMeasurementClick() }
     )
 }
